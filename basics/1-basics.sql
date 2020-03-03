@@ -1,5 +1,6 @@
 -- Table creation basics based off: https://www.postgresqltutorial.com/postgresql-create-table/
 -- A great resource!
+-- You can also find a reference for all commands here: https://www.postgresql.org/docs/9.1/sql-commands.html
 /*
  Things to consider before the create:
  Column constraints one can use are:
@@ -29,7 +30,7 @@ ADD
   COLUMN id SERIAL PRIMARY KEY;
 
 /* Now lets say the users need roles, a new role table is needed. We will make the link later. */
-CREATE TABLE role(
+CREATE TABLE roles(
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) UNIQUE NOT NULL,
   disabled BOOLEAN NOT NULL DEFAULT FALSE
@@ -42,7 +43,7 @@ CREATE TABLE user_roles(
   -- Joint primary key def.
   PRIMARY KEY (user_id, role_id),
   -- Constraint definitions, kinda as you would column decs.
-  CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES role (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES roles (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 ) -- And to create an index which will order user ids and make querying more efficient (but deal a blow to mutations) the following is done:
 CREATE INDEX user_roles_user_id_idx ON user_roles (user_id);
