@@ -34,7 +34,7 @@ CREATE TABLE roles(
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) UNIQUE NOT NULL,
   disabled BOOLEAN NOT NULL DEFAULT FALSE
-)
+);
 /* And now each user has a role so we need to add the relation. */
 CREATE TABLE user_roles(
   user_id INTEGER NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE user_roles(
   -- Constraint definitions, kinda as you would column decs.
   CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES roles (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
-) -- And to create an index which will order user ids and make querying more efficient (but deal a blow to mutations) the following is done:
+); -- And to create an index which will order user ids and make querying more efficient (but deal a blow to mutations) the following is done:
 CREATE INDEX user_roles_user_id_idx ON user_roles (user_id);
 
 -- Notice that PRIMARY KEY(user_id, role_id) will create an index but only with the joint params like (1-1) and searching for instance:
@@ -72,7 +72,7 @@ CREATE TABLE user_roles(
   role_id INTEGER NOT NULL,
   grant_date TIMESTAMP WITHOUT TIME ZONE,
   -- Constraint definitions, kinda as you would column decs.
-  CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES role (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES roles (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
